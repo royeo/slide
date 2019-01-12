@@ -1,14 +1,55 @@
 Monorepo
-12 Jan 2019
 
-Royeo
+Jianan Lu
 ljn6176@163.com
+https://github.com/royeo
 http://lujianan.com/
 
 * Introduction
 
-This slide deck introduces you to Go
+A monorepo is a software development strategy where code for many projects are stored in the same repository.
 
-* Hello, world
+* Challenges
 
-123
+- Directory structure
+- Dependency management
+- Development environment
+- Merge request
+- Continuous integration
+- Release version
+- Project name
+- Migrating to monorepo
+
+* Directory structure
+
+    ├── base
+    ├── docs
+    ├── proto
+    ├── scripts
+    ├── services
+    │   ├── svcA
+    │   └── svcB
+    ├── .gitlab-ci.yml
+    ├── docker-compose.yml
+    ├── go.mod
+    ├── go.sum
+    ├── Makefile
+    ├── OWNERS
+    └── README.md
+
+* Dependency management
+
+Use modules that comes with Go1.11.
+
+	go build ./...
+	go mod tidy
+
+All services use the same third-party package.
+
+* Development environment
+
+- Use `docker-compose` to build a development environment
+- Use `goimports` or `goreturns` to format the code and auto-import the package
+- Use `golint` and `go vet` to do static analysis
+- Use `prototool` to generated code from the .proto files
+- 使用 `zs` CLI 工具生成新的服务（模板还在完善中...）。
