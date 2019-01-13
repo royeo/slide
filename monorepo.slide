@@ -1,14 +1,128 @@
 Monorepo
-12 Jan 2019
 
-Royeo
+Jianan Lu
 ljn6176@163.com
+https://github.com/royeo
 http://lujianan.com/
 
 * Introduction
 
-This slide deck introduces you to Go
+简单来说，monorepo 就是一个仓库包含多个项目。
 
-* Hello, world
+Google、Facebook、Twitter 都采用了非常多的 monorepo。
 
-123
+Monorepo ≠ Monolith，Monolith 是一个应用程序包含大量耦合代码，很难维护。
+
+* Multirepo vs Monorepo
+
+* Multirepo
+
+Pros:
+
+    * 每个仓库拥有更好的规模，更小的代码库，更易于管理。
+    * 每个仓库都有明确的所有权，一个小团队可以拥有完整的微服务堆栈，并进行独立开发和部署。
+
+Cons:
+
+    * 跨仓库的改动效率低
+    * 仓库权限的分配繁琐
+    * 代码风格无法统一
+    * proto文件难以管理
+    * 随着仓库越来越多，不可避免的会产生一些混乱
+
+* Monorepo
+
+Pros:
+
+    * 易于代码重用
+    * 简化的依赖管理
+    * 易于搭建开发环境
+    * 原子提交，易于协调服务间的更改，以及进行大规模的重构
+    * 统一的 lint, build, test 和 release 过程
+    * 有效的 code review
+
+Cons：
+
+    * 仓库会变得很大
+    * 丢失每个项目的版本信息
+    * 无法控制不同项目的访问权限
+    * 需要更复杂的构建工具
+    
+* Conclusion
+
+Monorepo 有更多的优点，并且它的缺点也可以被很好的处理。
+
+* Challenges
+
+* Consider
+
+- Repo structure
+- Dependency management
+- Development environment
+- Code review
+- CI/CD
+
+* Repo structure
+
+    ├── base
+    ├── docs
+    ├── proto
+    ├── scripts
+    ├── services
+    │   ├── svcA
+    │   └── svcB
+    ├── .gitlab-ci.yml
+    ├── docker-compose.yml
+    ├── go.mod
+    ├── go.sum
+    ├── Makefile
+    ├── OWNERS
+    └── README.md
+
+* Dependency management
+
+Use modules that comes with Go1.11.
+
+	go build ./...
+	go mod tidy
+
+All services use the same third-party package.
+
+* Development environment
+
+- 使用 docker-compose 搭建开发环境
+- 使用 goimports 或 goreturns 格式化代码、自动导入
+- 使用 golint，go vet 进行代码静态检查
+- 使用 prototool 生成 protobuf 代码
+- 使用 zs CLI 工具生成服务模板（还在完善中...）
+
+* Code review
+
+目前 GitLab CE 不支持设置 approvers 和 reviewers.
+
+Compromise：
+
+- 通过 watch 仓库来接收所有 merge request 通知
+- 任何人都可以 review 他人代码，并提出有意义的 comment
+- 评论 LGTM（look good to me）表示已经 review 过代码
+- 核心成员设置为 Maintainer，来进行 merge 操作
+- 使用 OWNERS 文件来描述每个服务的 owner，文件规范参考 GitLab Code Owners
+
+* CI/CD
+
+Lint
+
+- golang
+- protobuf
+
+Test
+
+- partial test
+
+Build
+
+- partial build
+
+Deploy
+
+- manual release
