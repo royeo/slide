@@ -50,7 +50,7 @@ Cons：
     
 * Conclusion
 
-Monorepo 有更多的优点，并且它的缺点也可以被很好的处理。
+Monorepo 有更多的优点，并且它的缺点也能够被处理好。
 
 * Challenges
 
@@ -81,12 +81,16 @@ Monorepo 有更多的优点，并且它的缺点也可以被很好的处理。
 
 * Dependency management
 
-Use modules that comes with Go1.11.
+使用 Go1.11 module。
 
 	go build ./...
 	go mod tidy
 
-All services use the same third-party package.
+基础组件的通用代码放到 base 目录下共享。
+
+对共享代码做出 breaking change 需要承担相应的代价。
+
+为了避免耦合，可以适当违反 DRY。
 
 * Development environment
 
@@ -104,7 +108,7 @@ Compromise：
 
 - 通过 watch 仓库来接收所有 merge request 通知
 - 任何人都可以 review 他人代码，并提出有意义的 comment
-- 评论 LGTM（look good to me）表示已经 review 过代码
+- 评论 👍、+1、LGTM 表示已经 review 过代码
 - 核心成员设置为 Maintainer，来进行 merge 操作
 - 使用 OWNERS 文件来描述每个服务的 owner，文件规范参考 GitLab Code Owners
 
@@ -119,10 +123,17 @@ Test
 
 - partial test
 
-Build
-
-- partial build
-
 Deploy
 
-- manual release
+- manual build, release
+
+* Repo name
+
+- zs
+- mono
+- optimus
+- prime
+- stormy
+- wing
+- skyscraper
+- palace
