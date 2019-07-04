@@ -1,0 +1,91 @@
+Developer Guides
+
+davinlu
+davinlu@tencent.com
+https://github.com/royeo
+
+* Preface 
+
+现代化编程应该是：不强制使用相同的IDE，统一的代码风格，方便的依赖管理，持续集成，版本控制。
+
+* Concerns
+
+- Version control
+- Code review
+- Continuous integration
+- Golang getting started
+
+* Version control
+
+* Current workflow
+
+- Develop
+- Self test
+- Commit code
+- Code review
+- Testers
+- Deploy
+
+* Github flow
+
+.image image/developer-guides-github-flow.png
+
+* Git specification
+
+- Branch name
+- Commit message
+- Semantic version
+
+* Code review
+
+* Suggestion
+
+- 鼓励团队里的所有人都来 review 代码
+- 评论 👍、+1、LGTM 表示已经 review 过代码
+- 核心成员设置为 Maintainer，来执行 merge 操作
+- 使用 OWNERS 文件来描述每个服务的 owner
+
+* Continuous integration
+
+* Process
+
+- Lint
+- Static analysis
+- Test
+- Build
+
+* Unit test
+
+Pros：
+
+- 保证自己的代码正常工作
+- 保证自己的代码不会影响别人的代码
+- 一定程度上能避免写出过于复杂的代码
+
+Cons：
+
+- 需要花费额外的时间
+
+.image image/developer-guides-test.png
+
+* Golang getting started
+
+* Recommendation
+
+入门到精通：
+
+- [[https://tour.golang.org][A Tour of Go]], [[https://gobyexample.com/][Go by Example]]
+- [[https://gopl.io][The Go Programming Language]], [[https://github.com/royeo/awesome-programming-books/blob/master/golang/go%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80.pdf][PDF下载]]
+- [[https://github.com/chai2010/advanced-go-programming-book][Advanced Go Programming]]
+
+代码规范：
+
+- [[https://golang.org/doc/effective_go.html][Effective Go]]
+- [[https://github.com/golang/go/wiki/CodeReviewComments][Go Code Review Comments]]
+
+其他推荐：
+
+- [[https://golang.org/doc/faq][Frequently Asked Questions (FAQ)]]
+- [[https://talks.golang.org/2012/splash.article][Go at Google: Language Design in the Service of Software Engineering]]
+
+
