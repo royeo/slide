@@ -20,10 +20,8 @@ https://github.com/royeo
 * Current workflow
 
 - Develop
-- Self test
 - Commit code
 - Code review
-- Testers
 - Deploy
 
 * Github flow
