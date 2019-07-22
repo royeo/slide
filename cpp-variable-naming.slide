@@ -1,0 +1,97 @@
+Variable naming
+
+davinlu
+davinlu@tencent.com
+https://github.com/royeo
+
+* CamelCase vs underscore_case
+
+* Google C++ Style Guide
+
+The names of variables (including function parameters) and data members are all lowercase, with underscores between words. 
+
+For example:
+
+    string table_name;  // OK - uses underscore.
+    string tablename;   // OK - all lowercase.
+    string tableName;   // Bad - mixed case.
+
+* Community style
+
+MySQL:
+
+    int64 Mysql_query_runner::run_query(std::string query) {
+        bool expected_value = false;
+
+        if (!m_is_processing->compare_exchange_strong(expected_value, true)) {
+            return this->report_message(message);
+        }
+        uint64 result = this->run_query_unguarded(query);
+        *m_is_processing = false;
+
+        return result;
+    }
+
+MongoDB:
+
+    Query& Query::hint(BSONObj keyPattern) {
+        appendComplex("$hint", keyPattern);
+        return *this;
+    }
+
+* How to choose
+
+No matter which style, as long as it is unified.
+
+* Prefix of the variable
+
+* Good practice
+
+Global variable:
+
+    g_conf.ParseFile(confFile)
+
+Class member:
+
+    int m_cmem_bid;
+    int m_cmem_modid;
+    int m_cmem_cmdid;
+    int m_cmem_timeout;
+
+* Is the prefix of the variable necessary?
+
+Bad smell:
+
+    unsigned int uUid;  // uid or uuid ?
+
+Poor readability:
+
+    double m_fIpSearchTimeOutSec;
+
+* Code comparison
+
+With prefix:
+
+    void CServer::Req2FeedInfo(WriteFeedReq& req, FeedInfoInMem &stFeed)
+    {
+        stFeed.uAppid     = req.uAppid;
+        stFeed.uTypeid    = req.uTypeid;
+        stFeed.uFeedTime  = req.uOptime;
+        stFeed.uOpUid     = req.uOpUid;
+        stFeed.strFeedId  = req.strFeedId;
+        stFeed.strSummary = req.strSummary;
+    }
+
+No prefix:
+
+    void CServer::Req2FeedInfo(WriteFeedReq& req, FeedInfoInMem &feed)
+    {
+        feed.appid    = req.appid;
+        feed.typeid   = req.typeid;
+        feed.feedTime = req.optime;
+        feed.opUid    = req.opUid;
+        feed.feedId   = req.feedId;
+        feed.summary  = req.summary;
+    }
+
+* Conclusion
