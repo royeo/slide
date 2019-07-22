@@ -53,10 +53,7 @@ Global variable:
 
 Class member:
 
-    int m_cmem_bid;
-    int m_cmem_modid;
-    int m_cmem_cmdid;
-    int m_cmem_timeout;
+    AUTH_INFO m_auth_info;
 
 * Is the prefix of the variable necessary?
 
