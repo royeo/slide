@@ -57,11 +57,11 @@ Class member:
 
 * Is the prefix of the variable necessary?
 
-Bad smell:
+Confuse:
 
     unsigned int uUid;  // uid or uuid ?
 
-Poor readability:
+Readability:
 
     double m_fIpSearchTimeOutSec;
 
