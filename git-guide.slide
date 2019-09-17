@@ -1,0 +1,116 @@
+Git Guide
+
+davinlu
+davinlu@tencent.com
+https://github.com/royeo
+
+* Why Git
+
+* Git 简史
+
+Git 的诞生源于 Linux 内核社区，在开发初期就设定了以下目标：
+
+- 速度
+- 简单的设计
+- 对非线性开发模式的强力支持（允许成千上万个并行开发的分支）
+- 完全分布式
+- 有能力高效管理类似 Linux 内核一样的超大规模项目（速度和数据量）
+
+* 集中化的版本控制系统
+
+集中化的版本控制系统，有一个中央服务器保存所有文件的修订版本，通过客户端可以取出最新的文件或者提交更新。
+
+缺点在于：由于客户端只获取最新版本的文件，不包含变更历史，假如中央服务器磁盘发生损坏，又没有备份，那么将会丢失所有数据，包括项目的整个变更历史，只剩下我们电脑上保留的文件。
+
+.image image/2019-09-13-02-22-26.png
+
+* 分布式的版本控制系统
+
+分布式的版本控制系统，客户端会把代码仓库完整地镜像下来。每一次的克隆操作，实际上都是一次对代码仓库的完整备份。
+
+当服务器发生故障，可以用任何一个克隆出来的本地仓库来恢复。
+
+.image image/2019-09-13-02-19-44.png
+
+* Git vs SVN
+
+Pros:
+
+- Git 是分布式的版本控制系统，SVN 是集中式的版本控制系统
+- Git 的绝大多数操作都在本地完成，不需要与服务器通信
+- Git 的分支很轻量，合并也很容易
+
+Cons:
+
+- Git 的学习成本比 SVN 高，因为 Git 有更多的概念和更多的命令
+- Git 缺少好用的 GUI，比如 SVN 的 TortoiseSVN
+
+* Git basis
+
+* Git 三种状态
+
+Git 有三种状态，你的文件可能处于其中之一：：
+
+- 已修改（modified）
+- 已暂存（staged）
+- 已提交（committed）
+
+已修改表示修改了文件，但还没保存到数据库中。 
+
+已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
+
+已提交表示数据已经安全的保存在本地数据库中。 
+
+* Git 工作区域
+
+- Git 工作区：本地的仓库目录
+- Git 暂存区：本质上是一个文件，保存了下次将提交的文件列表信息
+- Git 仓库：保存项目的元数据和对象数据库
+
+.image image/2019-09-13-03-04-38.png
+
+* Git 工作流程
+
+1. 在工作目录中修改或新增文件
+
+2. 暂存文件（git add），将文件的快照放入暂存区域
+
+3. 提交更新（git commit），将暂存区的文件存储到 Git 仓库
+
+* Merge Request
+
+还需要 review 吗，review 的优点是我可以创建某个提交范围的 review，缺点是 reviewer 无法确定你这部分提交是否真的正在分支上
+
+* Git config
+
+* 用户名和邮箱
+
+全局配置，针对当前用户，写入 ~/.gitconfig 文件：
+
+    $ git config --global user.name "Your Name"
+    $ git config --global user.email "email@example.com"
+
+特定配置，针对当前仓库，写入 .git/config 文件：
+
+    $ git config user.name "Your Name"
+    $ git config user.email "email@example.com"
+
+.image image/2019-09-15-21-21-20.png
+
+* SSH key
+
+
+
+* 持续集成
+
+CI 的触发时机：
+
+- 推送 branch 的修改到远程仓库，会触发 branch 的 CI
+- branch 通过 MR 合入 master，会触发 master 的 CI
+
+* 工具推荐
+
+- [[https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/git/git.plugin.zsh][on-my-zsh 的 Git 插件]]：提供了非常多 Git 操作的 alias，可以极大提高 Git 操作效率
+- [[https://github.com/jonas/tig][tig]]：Git 的命令行交互式操作工具，提供了更加直观, 方便快捷的 Git 操作
+- [[https://github.com/royeo/git-checkout-branch][git-checkout-branch]]：交互式切换 Git 分支，并支持分支搜索
+
