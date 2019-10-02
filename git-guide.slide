@@ -20,17 +20,13 @@ Git 的诞生源于 Linux 内核社区，在开发初期就设定了以下目标
 
 集中化的版本控制系统，有一个中央服务器保存所有文件的修订版本，通过客户端可以取出最新的文件或者提交更新。
 
-缺点在于：由于客户端只获取最新版本的文件，不包含变更历史，假如中央服务器磁盘发生损坏，又没有备份，那么将会丢失所有数据，包括项目的整个变更历史，只剩下我们电脑上保留的文件。
-
-.image image/2019-09-13-02-22-26.png
+.image image/git-guide/2019-09-13-02-22-26.png
 
 * 分布式的版本控制系统
 
 分布式的版本控制系统，客户端会把代码仓库完整地镜像下来。每一次的克隆操作，实际上都是一次对代码仓库的完整备份。
 
-当服务器发生故障，可以用任何一个克隆出来的本地仓库来恢复。
-
-.image image/2019-09-13-02-19-44.png
+.image image/git-guide/2019-09-13-02-19-44.png
 
 * Git vs SVN
 
@@ -38,7 +34,7 @@ Pros:
 
 - Git 是分布式的版本控制系统，SVN 是集中式的版本控制系统
 - Git 的绝大多数操作都在本地完成，不需要与服务器通信
-- Git 的分支很轻量，合并也很容易
+- Git 拥有强大的分支管理，分支很轻量，合并也很容易
 
 Cons:
 
@@ -47,15 +43,15 @@ Cons:
 
 * Git basis
 
-* Git 三种状态
+* Git 文件状态
 
-Git 有三种状态，你的文件可能处于其中之一：：
+Git 仓库下的文件有三种状态：
 
 - 已修改（modified）
 - 已暂存（staged）
 - 已提交（committed）
 
-已修改表示修改了文件，但还没保存到数据库中。 
+已修改表示修改了文件，但还没保存到本地数据库中。 
 
 已暂存表示对一个已修改文件的当前版本做了标记，使之包含在下次提交的快照中。
 
@@ -64,49 +60,112 @@ Git 有三种状态，你的文件可能处于其中之一：：
 * Git 工作区域
 
 - Git 工作区：本地的仓库目录
-- Git 暂存区：本质上是一个文件，保存了下次将提交的文件列表信息
+- Git 暂存区：保存了下次将提交的文件快照
 - Git 仓库：保存项目的元数据和对象数据库
 
-.image image/2019-09-13-03-04-38.png
+.image image/git-guide/2019-09-13-03-04-38.png
 
-* Git 工作流程
+* Git 版本号
 
-1. 在工作目录中修改或新增文件
+Git 里所有数据在存储的时候，会基于当前文件的内容和目录结构计算一个校验和，然后以校验和来引用，保证完整性。
 
-2. 暂存文件（git add），将文件的快照放入暂存区域
+这个校验和是使用 SHA-1 散列生成一个 40 个十六进制字符组成的字符串，在提交时自动生成，并以此作为当前版本。
 
-3. 提交更新（git commit），将暂存区的文件存储到 Git 仓库
+.image image/git-guide/2019-09-15-21-21-20.png
+
+* Git merge
+
+Git 有两种合并：
+
+- 快进式合并（fast forward），不生成单独的合并提交
+- 非快进式合并（none fast-forword），会生成单独的合并提交
+
+* Git fast forward-merge
+
+如下图所示，bugfix 分支是从 master 分支 checkout 出来的。
+
+.image image/git-guide/2019-09-20-15-54-36.png
+
+当合并 bugfix 分支到 master 分支时，因为 master 分支后续没有提交，所以就会进行快进式合并。
+
+.image image/git-guide/2019-09-20-15-56-01.png
+
+* Git none fast-forward merge
+
+如果 master 分支在 bugfix 分支 checkout 出去后有新的提交。
+
+.image image/git-guide/2019-09-20-15-56-48.png
+
+合并 bugfix 分支后会生成一个提交，master 分支的 HEAD 会移动到该提交上。
+
+.image image/git-guide/2019-09-20-15-57-01.png
+
+* Git rebase
+
+.image image/git-guide/2019-09-20-16-07-10.png
+
+.image image/git-guide/2019-09-20-16-07-37.png
+
+* Git submodule
+
+Submodule is a link，可以理解为父仓库下的一个指向子仓库特定版本的指针。
+
+当子仓库的版本发生变更，父仓库又依赖这个变更的子仓库版本时，需要将子仓库的版本变更提交到父仓库。
+
+    $ git status
+
+        modified:   lib (new commits)
+
+    $ git add lib
+    $ git commit -m "update submodule"
+    $ git push
+
+* Git workflow
+
+* 单人开发
+
+- 基于 master 分支创建开发分支
+- 开发完后，将开发分支的提交推送到远程仓库
+- 在工蜂创建开发分支到 master 分支的 MR
+- 邀请 review，最终将开发分支 merge 到 master 分支
+
+.image image/git-guide/2019-09-20-09-20-00.png
+
+* 多人开发
+
+- 基于 master 分支创建开发分支，比如 feature 分支
+- 基于 feature 开发分支创建自己的开发分支 feature_xxx
+- feature_xxx 分支开发完成后，将提交推送到远程仓库
+- 在工蜂创建 feature_xxx 分支到 feature 分支的 MR
+- 邀请 review，将 feature_xxx 分支 merge 到 feature 分支
+- 整个需求开发完后，创建 feature 分支到 master 分支的 MR，最终合入 master
+
+.image image/git-guide/2019-09-20-09-31-24.png
 
 * Merge Request
 
-还需要 review 吗，review 的优点是我可以创建某个提交范围的 review，缺点是 reviewer 无法确定你这部分提交是否真的正在分支上
+* MR 规范
 
-* Git config
+- 禁止在 master 分支上直接提交，所有修改通过 MR 的方式合入 master
+- MR 进行合并前，需邀请相关 reviewer 来 review 代码，然后由拥有 merge 权限的成员进行合并操作
+- MR 进行合并时，及时删除源分支，避免遗留过多无用分支
+- 在开发中的分支，创建 MR 时建议在 title 前加上 WIP，这样可以阻止该 MR 的合并
 
-* 用户名和邮箱
-
-全局配置，针对当前用户，写入 ~/.gitconfig 文件：
-
-    $ git config --global user.name "Your Name"
-    $ git config --global user.email "email@example.com"
-
-特定配置，针对当前仓库，写入 .git/config 文件：
-
-    $ git config user.name "Your Name"
-    $ git config user.email "email@example.com"
-
-.image image/2019-09-15-21-21-20.png
-
-* SSH key
-
-
+* Continuous integration
 
 * 持续集成
 
+CI 的工作流：
+
+- 编译当前分支
+- 代码质量检查（TODO）
+- 同步 so 文件到编译机
+
 CI 的触发时机：
 
-- 推送 branch 的修改到远程仓库，会触发 branch 的 CI
-- branch 通过 MR 合入 master，会触发 master 的 CI
+- 远程仓库任意分支的改动都会触发 CI
+
+* Git productivity
 
 * 工具推荐
 
